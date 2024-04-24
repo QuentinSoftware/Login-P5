@@ -1,0 +1,25 @@
+<h1>Registro de usuario</h1>
+<form method="POST">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required>
+    <br>
+    <label>Apellido Paterno:</label>
+    <input type="text" name="apellido_paterno" required>
+    <br>
+    <label>Apellido Materno:</label>
+    <input type="text" name="apellido_materno" required>
+    <br>
+    <label>Email:</label>
+    <input type="email" name="email" required>
+    <br>
+    <label>Contraseña:</label>
+    <input type="password" name="contraseña" required>
+    <br>
+    <label>Rol:</label>
+    <select name="rol" required>
+        <option value="Cliente">Cliente</option>
+        <option value="Vendedor">Vendedor</option>
+    </select>
+    <br>
+    <input type="submit" value="Registrar">
+</form>
