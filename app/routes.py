@@ -45,3 +45,28 @@ def register():
         return 'Usuario registrado exitosamente'
     
     return render_template('register.html')
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """
+    Ruta para el inicio de sesión de usuarios.
+    """
+    if request.method == 'POST':
+        email = request.form['email']
+        contraseña = request.form['contraseña']
+
+        # Hashear la contraseña ingresada
+        contraseña_hasheada = hashlib.sha256(contraseña.encode()).hexdigest()
+
+        # Verificar si el usuario existe en la base de datos
+        usuario = Usuario.query.filter_by(email=email, contraseña=contraseña_hasheada).first()
+
+        if usuario:
+            # Si el usuario existe, manda mensaje que fue logeado correctamente 
+
+            return 'Usuario Logeado correctamente'
+        else:
+            # Si las credenciales son incorrectas, mostrar un mensaje de error
+            return 'Credenciales incorrectas. Por favor, inténtalo de nuevo.'
+
+    return render_template('login.html')
