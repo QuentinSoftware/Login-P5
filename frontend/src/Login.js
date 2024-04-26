@@ -5,19 +5,50 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setErrors({ ...errors, email: '' }); // Limpiar el error de email al modificar el campo
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setErrors({ ...errors, password: '' }); // Limpiar el error de contraseña al modificar el campo
+  };
+
+  const validateForm = () => {
+    let errors = {};
+    const emailRegex = /^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/;
+
+    if (!emailRegex.test(email)) {
+      errors.email = 'El correo electrónico no tiene un formato válido.';
+    }
+
+    if (password.length < 8) {
+      errors.password = 'La contraseña debe tener al menos 8 caracteres.';
+    }
+
+    return errors;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/login', { email, contraseña: password });
-      if (response.data === 'Usuario Logeado correctamente') {
-        // Redireccionar a la página de inicio (actualiza la URL según tu aplicación)
-        window.location.href = '/inicio';
-      } else {
-        setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+    const errors = validateForm();
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      try {
+        const response = await axios.post(`/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+        if (response.data === 'Usuario Logeado correctamente') {
+          // Redireccionar a la página de inicio (actualiza la URL según tu aplicación)
+          window.location.href = '/inicio';
+        } else {
+          setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        }
+      } catch (error) {
+        setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
       }
-    } catch (error) {
-      setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -33,20 +64,22 @@ function Login() {
             id="email"
             name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             required
           />
+          {errors.email && <p>{errors.email}</p>}
         </div>
         <div>
           <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
             id="password"
-            name="contraseña"
+            name="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
           />
+          {errors.password && <p>{errors.password}</p>}
         </div>
         <button type="submit">Iniciar sesión</button>
       </form>
