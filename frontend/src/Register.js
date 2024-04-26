@@ -11,26 +11,62 @@ function Register() {
     rol: 'Cliente',
   });
   const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' }); // Limpiar el error del campo modificado
+  };
+
+  const validateForm = () => {
+    let errors = {};
+    const nombreRegex = /^[a-zA-Z\s]+$/;
+    const emailRegex = /^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/;
+
+    if (!nombreRegex.test(formData.nombre)) {
+      errors.nombre = 'El nombre solo puede contener letras y espacios.';
+    }
+
+    if (!nombreRegex.test(formData.apellido_paterno)) {
+      errors.apellido_paterno = 'El apellido paterno solo puede contener letras y espacios.';
+    }
+
+    if (!nombreRegex.test(formData.apellido_materno)) {
+      errors.apellido_materno = 'El apellido materno solo puede contener letras y espacios.';
+    }
+
+    if (!emailRegex.test(formData.email)) {
+      errors.email = 'El correo electrónico no tiene un formato válido.';
+    }
+
+    if (formData.contraseña.length < 8) {
+      errors.contraseña = 'La contraseña debe tener al menos 8 caracteres.';
+    }
+
+    return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/register', formData);
-      setMessage(response.data);
-      setFormData({
-        nombre: '',
-        apellido_paterno: '',
-        apellido_materno: '',
-        email: '',
-        contraseña: '',
-        rol: 'Cliente',
-      });
-    } catch (error) {
-      setMessage('Ocurrió un error al registrar el usuario.');
+    const errors = validateForm();
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      try {
+        const response = await axios.post('/register', formData);
+        setMessage(response.data);
+        setFormData({
+          nombre: '',
+          apellido_paterno: '',
+          apellido_materno: '',
+          email: '',
+          contraseña: '',
+          rol: 'Cliente',
+        });
+        setErrors({}); // Limpiar los errores después de un registro exitoso
+      } catch (error) {
+        setMessage('Ocurrió un error al registrar el usuario.');
+      }
     }
   };
 
@@ -49,6 +85,7 @@ function Register() {
             onChange={handleChange}
             required
           />
+          {errors.nombre && <p>{errors.nombre}</p>}
         </div>
         <div>
           <label htmlFor="apellido_paterno">Apellido Paterno:</label>
@@ -60,6 +97,7 @@ function Register() {
             onChange={handleChange}
             required
           />
+          {errors.apellido_paterno && <p>{errors.apellido_paterno}</p>}
         </div>
         <div>
           <label htmlFor="apellido_materno">Apellido Materno:</label>
@@ -71,6 +109,7 @@ function Register() {
             onChange={handleChange}
             required
           />
+          {errors.apellido_materno && <p>{errors.apellido_materno}</p>}
         </div>
         <div>
           <label htmlFor="email">Email:</label>
@@ -82,6 +121,7 @@ function Register() {
             onChange={handleChange}
             required
           />
+          {errors.email && <p>{errors.email}</p>}
         </div>
         <div>
           <label htmlFor="contraseña">Contraseña:</label>
@@ -93,6 +133,7 @@ function Register() {
             onChange={handleChange}
             required
           />
+          {errors.contraseña && <p>{errors.contraseña}</p>}
         </div>
         <div>
           <label htmlFor="rol">Rol:</label>
