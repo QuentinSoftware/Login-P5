@@ -20,18 +20,19 @@ function Register() {
 
   const validateForm = () => {
     let errors = {};
-    const nombreRegex = /^[a-zA-Z\s]+$/;
+    const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
     if (!nombreRegex.test(formData.nombre)) {
-      errors.nombre = 'El nombre solo puede contener letras y espacios.';
+      errors.nombre = 'El nombre solo puede contener letras, espacios y acentos.';
     }
 
     if (!nombreRegex.test(formData.apellido_paterno)) {
-      errors.apellido_paterno = 'El apellido paterno solo puede contener letras y espacios.';
+      errors.apellido_paterno = 'El apellido paterno solo puede contener letras, espacios y acentos.';
     }
 
     if (!nombreRegex.test(formData.apellido_materno)) {
-      errors.apellido_materno = 'El apellido materno solo puede contener letras y espacios.';
+      errors.apellido_materno = 'El apellido materno solo puede contener letras, espacios y acentos.';
     }
 
     if (!emailRegex.test(formData.email)) {
