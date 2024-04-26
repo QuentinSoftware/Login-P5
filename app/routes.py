@@ -14,19 +14,19 @@ def index():
     """
     return 'Bienvenido a mi aplicación Flask'
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     """
     Ruta para el registro de usuarios.
     """
     if request.method == 'POST':
         # Obtener los datos del formulario
-        nombre = request.form['nombre']
-        apellido_paterno = request.form['apellido_paterno']
-        apellido_materno = request.form['apellido_materno']
-        email = request.form['email']
-        contraseña = request.form['contraseña']
-        rol_nombre = request.form['rol']
+        nombre = request.json['nombre']
+        apellido_paterno = request.json['apellido_paterno']
+        apellido_materno = request.json['apellido_materno']
+        email = request.json['email']
+        contraseña = request.json['contraseña']
+        rol_nombre = request.json['rol']
         
         # Hashear la contraseña
         contraseña_hasheada = hashlib.sha256(contraseña.encode()).hexdigest()
@@ -48,7 +48,7 @@ def register():
         
         return 'Usuario registrado exitosamente'
     
-    return render_template('register.html')
+    return 'Usuario registrado exitosamente'
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,8 +56,8 @@ def login():
     Ruta para el inicio de sesión de usuarios.
     """
     if request.method == 'POST':
-        email = request.form['email']
-        contraseña = request.form['contraseña']
+        email = request.json['email']
+        contraseña = request.json['contraseña']
 
         # Hashear la contraseña ingresada
         contraseña_hasheada = hashlib.sha256(contraseña.encode()).hexdigest()
@@ -73,4 +73,4 @@ def login():
             # Si las credenciales son incorrectas, mostrar un mensaje de error
             return 'Credenciales incorrectas. Por favor, inténtalo de nuevo.'
 
-    return render_template('login.html')
+    return 'Credenciales incorrectas. Por favor, inténtalo de nuevo.'

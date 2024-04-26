@@ -21,8 +21,7 @@ function Register() {
   const validateForm = () => {
     let errors = {};
     const nombreRegex = /^[a-zA-Z\s]+$/;
-    const emailRegex = /^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/;
-
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     if (!nombreRegex.test(formData.nombre)) {
       errors.nombre = 'El nombre solo puede contener letras y espacios.';
     }
@@ -46,30 +45,33 @@ function Register() {
     return errors;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = validateForm();
-    setErrors(errors);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const errors = validateForm();
+  setErrors(errors);
 
-    if (Object.keys(errors).length === 0) {
-      try {
-        const response = await axios.post('/register', formData);
-        setMessage(response.data);
-        setFormData({
-          nombre: '',
-          apellido_paterno: '',
-          apellido_materno: '',
-          email: '',
-          contraseña: '',
-          rol: 'Cliente',
-        });
-        setErrors({}); // Limpiar los errores después de un registro exitoso
-      } catch (error) {
-        setMessage('Ocurrió un error al registrar el usuario.');
-      }
+  if (Object.keys(errors).length === 0) {
+    try {
+      const response = await axios.post('http://localhost:5000/register', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setMessage(response.data);
+      setFormData({
+        nombre: '',
+        apellido_paterno: '',
+        apellido_materno: '',
+        email: '',
+        contraseña: '',
+        rol: 'Cliente',
+      });
+      setErrors({});
+    } catch (error) {
+      setMessage('Ocurrió un error al registrar el usuario.');
     }
-  };
-
+  }
+};
   return (
     <div>
       <h2>Registro de Usuario</h2>
