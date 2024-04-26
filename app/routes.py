@@ -1,7 +1,11 @@
 from flask import render_template, request
 from app import app, db
 from app.models import Usuario, Rol
+from flask_cors import CORS
 import hashlib
+
+# Habilitar CORS para todas las rutas
+CORS(app)
 
 @app.route('/')
 def index():
