@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from app import app, db
 from app.models import Usuario, Rol
 from flask_cors import CORS
@@ -50,27 +50,40 @@ def register():
     
     return 'Usuario registrado exitosamente'
     
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     """
     Ruta para el inicio de sesión de usuarios.
     """
     if request.method == 'POST':
         email = request.json['email']
-        contraseña = request.json['contraseña']
+        contraseña = request.json['password']
 
         # Hashear la contraseña ingresada
         contraseña_hasheada = hashlib.sha256(contraseña.encode()).hexdigest()
 
         # Verificar si el usuario existe en la base de datos
-        usuario = Usuario.query.filter_by(email=email, contraseña=contraseña_hasheada).first()
+        usuario = Usuario.query.filter_by(email=email).first()
 
         if usuario:
-            # Si el usuario existe, manda mensaje que fue logeado correctamente 
-
-            return 'Usuario Logeado correctamente'
+            if usuario.contraseña == contraseña_hasheada:
+                # Si el usuario existe y la contraseña es correcta, generar un token
+                token = f"token-{usuario.id}"
+                return jsonify({"message": "Usuario Logeado correctamente", "token": token})
+            else:
+                return jsonify({"message": "Contraseña incorrecta. Por favor, inténtalo de nuevo."})
         else:
-            # Si las credenciales son incorrectas, mostrar un mensaje de error
-            return 'Credenciales incorrectas. Por favor, inténtalo de nuevo.'
+            return jsonify({"message": "El usuario no existe. Por favor, regístrate primero."})
 
-    return 'Credenciales incorrectas. Por favor, inténtalo de nuevo.'
+    return jsonify({"message": "Método no permitido"}), 405
+
+
+@app.route('/check-auth', methods=['GET'])
+def check_auth():
+    token = request.headers.get('Authorization')
+    if token:
+        usuario_id = token.replace("token-", "")
+        usuario = Usuario.query.get(usuario_id)
+        if usuario:
+            return jsonify({"message": "Autenticación exitosa"})
+    return jsonify({"message": "No autenticado"}), 401

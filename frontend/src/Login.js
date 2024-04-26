@@ -33,24 +33,26 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = validateForm();
-    setErrors(errors);
+  e.preventDefault();
+  const errors = validateForm();
+  setErrors(errors);
 
-    if (Object.keys(errors).length === 0) {
-      try {
-        const response = await axios.post(`/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-        if (response.data === 'Usuario Logeado correctamente') {
-          // Redireccionar a la página de inicio (actualiza la URL según tu aplicación)
-          window.location.href = '/inicio';
-        } else {
-          setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
-        }
-      } catch (error) {
-        setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
+  if (Object.keys(errors).length === 0) {
+    try {
+      const response = await axios.post('http://localhost:5000/login', { email, password });
+      if (response.data.message === 'Usuario Logeado correctamente') {
+        // Guardar el token en una cookie
+        document.cookie = `token=${response.data.token}; path=/`;
+        // Redireccionar a la página de inicio
+        window.location.href = '/inicio';
+      } else {
+        setError(response.data.message);
       }
+    } catch (error) {
+      setError('Ocurrió un error. Por favor, inténtalo de nuevo.');
     }
-  };
+  }
+};
 
   return (
     <div className="App">
