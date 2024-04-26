@@ -37,3 +37,9 @@ CREATE TABLE usuarios_roles (
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE,
     FOREIGN KEY (rol_id) REFERENCES roles (id) ON DELETE CASCADE
 );
+
+-- Insertar usuario de prueba
+INSERT INTO usuarios (nombre, apellido_paterno, apellido_materno, email, contraseña) VALUES ('Juan', 'Perez', 'Lopez', 'juan.perez@example.com', 'Password123!');
+
+-- Asignar el rol de 'Cliente' al usuario de prueba (asumiendo que el id de 'Cliente' es 2)
+INSERT INTO usuarios_roles (usuario_id, rol_id) VALUES (LAST_INSERT_ID(), 2);
