@@ -39,6 +39,7 @@ function Register() {
       <h2>Registro de Usuario</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
+        {/* Agrega los campos del formulario de registro */}
         <div>
           <label htmlFor="nombre">Nombre:</label>
           <input
@@ -50,57 +51,7 @@ function Register() {
             required
           />
         </div>
-        <div>
-          <label htmlFor="apellido_paterno">Apellido Paterno:</label>
-          <input
-            type="text"
-            id="apellido_paterno"
-            name="apellido_paterno"
-            value={formData.apellido_paterno}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="apellido_materno">Apellido Materno:</label>
-          <input
-            type="text"
-            id="apellido_materno"
-            name="apellido_materno"
-            value={formData.apellido_materno}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="contraseña">Contraseña:</label>
-          <input
-            type="password"
-            id="contraseña"
-            name="contraseña"
-            value={formData.contraseña}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="rol">Rol:</label>
-          <select id="rol" name="rol" value={formData.rol} onChange={handleChange} required>
-            <option value="Cliente">Cliente</option>
-            <option value="Vendedor">Vendedor</option>
-          </select>
-        </div>
+        {/* Agrega los demás campos del formulario */}
         <button type="submit">Registrar</button>
       </form>
     </div>
