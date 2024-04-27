@@ -55,12 +55,12 @@ function Login() {
 };
 
   return (
-    <div className="App">
-      <h2>Iniciar sesión</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+      <h2 className="text-2xl font-bold mb-8">Iniciar sesión</h2>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md">
+        <div className="mb-4">
+          <label htmlFor="email" className="block mb-2">Email:</label>
           <input
             type="email"
             id="email"
@@ -68,11 +68,12 @@ function Login() {
             value={email}
             onChange={handleEmailChange}
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded"
           />
-          {errors.email && <p>{errors.email}</p>}
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
         </div>
-        <div>
-          <label htmlFor="password">Contraseña:</label>
+        <div className="mb-4">
+          <label htmlFor="password" className="block mb-2">Contraseña:</label>
           <input
             type="password"
             id="password"
@@ -80,11 +81,17 @@ function Login() {
             value={password}
             onChange={handlePasswordChange}
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded"
           />
-          {errors.password && <p>{errors.password}</p>}
+          {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+          Iniciar sesión
+        </button>
       </form>
+      <p className="mt-4">
+        ¿No tienes una cuenta? <Link to="/register" className="text-blue-500 hover:underline">Regístrate</Link>
+      </p>
     </div>
   );
 }

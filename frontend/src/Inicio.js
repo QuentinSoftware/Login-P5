@@ -20,10 +20,21 @@ function Inicio() {
     checkAuth();
   }, []);
 
+  const handleLogout = () => {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = '/';
+  };
+
   return (
-    <div>
-      <h1>Bienvenido a la página de inicio</h1>
-      <p>Esta página solo es visible para usuarios autenticados.</p>
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-bold mb-8">Bienvenido a la página de inicio</h1>
+      <p className="text-xl mb-8">Esta página solo es visible para usuarios autenticados.</p>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+      >
+        Cerrar sesión
+      </button>
     </div>
   );
 }

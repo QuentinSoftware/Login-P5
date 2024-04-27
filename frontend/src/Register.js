@@ -74,16 +74,16 @@ const handleSubmit = async (e) => {
   }
 };
   return (
-    <div>
-      <h2>Registro de Usuario</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+      <h2 className="text-2xl font-bold mb-8">Registro de Usuario</h2>
+      {message && <p className={`mb-4 ${message.includes('error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>}
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md">
         <div>
           <label htmlFor="nombre">Nombre:</label>
           <input
-            type="text"
-            id="nombre"
-            name="nombre"
+              type="text"
+              id="nombre"
+              name="nombre"
             value={formData.nombre}
             onChange={handleChange}
             required
@@ -145,8 +145,13 @@ const handleSubmit = async (e) => {
             <option value="Vendedor">Vendedor</option>
           </select>
         </div>
-        <button type="submit">Registrar</button>
+        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+          Registrar
+        </button>
       </form>
+      <p className="mt-4">
+        ¿Ya tienes una cuenta? <Link to="/login" className="text-blue-500 hover:underline">Inicia sesión</Link>
+      </p>
     </div>
   );
 }
