@@ -89,7 +89,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado lo siguiente:
 
 5. Inicia el servidor backend:
    ```bash
-   flask run
+   python -m flask run
    ```
    La aplicación backend estará disponible en `http://localhost:5000`.
    
@@ -104,7 +104,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado lo siguiente:
    npm install
    ```
 
-3. Inicia la aplicación frontend:
+3. Inicia la aplicación frontend, posicionandote en la ruta  la altura de la carpeta de react, en este caso se llama frontend:
    ```bash
    npm start
    ```
